@@ -1,0 +1,921 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ōNLē ORGANICS — Wellness Advisor</title>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #fef9ef;
+  --primary: #5a5136;
+  --primary-light: #7a7156;
+  --secondary: #75593a;
+  --secondary-light: #9a7e5e;
+  --surface-lowest: #ffffff;
+  --surface-low: #f8f3e9;
+  --surface-mid: #f2ede3;
+  --surface-high: #e7e2d8;
+  --on-surface: #1d1c16;
+  --on-surface-variant: #4a4739;
+  --on-surface-muted: #8a8577;
+  --outline-variant: rgba(74, 71, 57, 0.15);
+  --primary-container: #6b6248;
+  --on-primary: #fef9ef;
+  --accent-green: #6b7d5a;
+  --accent-warm: #a0845c;
+  --font-serif: 'Newsreader', Georgia, serif;
+  --font-sans: 'Manrope', -apple-system, sans-serif;
+  --ease: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-out: cubic-bezier(0, 0, 0.2, 1);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--font-sans);
+  background: var(--bg);
+  color: var(--on-surface);
+  -webkit-font-smoothing: antialiased;
+  line-height: 1.6;
+}
+
+/* ══════════ HEADER (Glassmorphism nav) ══════════ */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(254, 249, 239, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  padding: 0 48px;
+  transition: background 0.3s;
+}
+.header-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 72px;
+}
+.logo-img { height: 32px; opacity: 0.9; }
+.header-nav { display: flex; gap: 32px; list-style: none; }
+.header-nav a {
+  color: var(--on-surface-variant);
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.3px;
+  transition: color 0.3s;
+}
+.header-nav a:hover { color: var(--primary); }
+.header-nav .nav-active { color: var(--primary); font-weight: 600; }
+.header-acts { display: flex; align-items: center; gap: 20px; font-size: 13px; color: var(--on-surface-muted); }
+.header-acts a { color: var(--on-surface-muted); text-decoration: none; }
+
+/* ══════════ ADVISOR WRAPPER ══════════ */
+.advisor-wrap { max-width: 820px; margin: 0 auto; padding: 0 24px 80px; }
+
+/* ══════════ HERO — Editorial asymmetry ══════════ */
+.hero {
+  padding: 64px 0 24px;
+  position: relative;
+}
+.hero-eyebrow {
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--secondary);
+  margin-bottom: 16px;
+}
+.hero h1 {
+  font-family: var(--font-serif);
+  font-size: 3.2rem;
+  font-weight: 400;
+  color: var(--primary);
+  line-height: 1.15;
+  margin-bottom: 16px;
+  max-width: 580px;
+}
+.hero h1 em { font-style: italic; font-weight: 500; color: var(--secondary); }
+.hero-body {
+  font-size: 1rem;
+  color: var(--on-surface-muted);
+  line-height: 1.75;
+  max-width: 480px;
+  font-weight: 300;
+}
+.hero-disclaimer {
+  margin-top: 20px;
+  padding: 14px 20px;
+  background: var(--surface-low);
+  border-radius: 12px;
+  font-size: 11.5px;
+  color: var(--on-surface-muted);
+  line-height: 1.6;
+  max-width: 560px;
+}
+.hero-disclaimer a { color: var(--primary); text-decoration: underline; text-underline-offset: 2px; }
+
+/* ══════════ JOURNEY ══════════ */
+.journey { display: flex; flex-direction: column; gap: 0; }
+
+/* Step animations */
+.step {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.6s var(--ease-out), transform 0.6s var(--ease-out);
+  pointer-events: none;
+}
+.step.active {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+/* ── Advisor speech (editorial block, not bubble) ── */
+.advisor-block {
+  padding: 28px 0;
+  position: relative;
+}
+.advisor-block .ab-eyebrow {
+  font-family: var(--font-sans);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--secondary-light);
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.advisor-block .ab-eyebrow::before {
+  content: '';
+  display: inline-block;
+  width: 20px;
+  height: 1px;
+  background: var(--secondary-light);
+}
+.advisor-block .ab-text {
+  font-family: var(--font-serif);
+  font-size: 1.35rem;
+  line-height: 1.65;
+  color: var(--on-surface);
+  font-weight: 400;
+  max-width: 620px;
+}
+.advisor-block .ab-text strong { font-weight: 600; color: var(--primary); }
+
+/* ── User choice displayed ── */
+.user-choice {
+  display: flex;
+  justify-content: flex-end;
+  padding: 8px 0 20px;
+}
+.user-choice-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 24px;
+  background: var(--primary);
+  color: var(--on-primary);
+  border-radius: 100px;
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.2px;
+}
+.user-choice-pill .uc-check {
+  width: 18px; height: 18px;
+  border-radius: 50%;
+  background: rgba(254,249,239,0.2);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 10px;
+}
+
+/* ── Option cards (intent fork — large tiles) ── */
+.intent-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  padding: 8px 0 28px;
+}
+.intent-card {
+  padding: 32px 28px;
+  background: var(--surface-lowest);
+  border-radius: 16px;
+  cursor: pointer;
+  transition: all 0.3s var(--ease);
+  position: relative;
+  overflow: hidden;
+}
+.intent-card::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--primary), var(--secondary));
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.4s var(--ease);
+}
+.intent-card:hover { background: var(--surface-low); transform: translateY(-3px); }
+.intent-card:hover::after { transform: scaleX(1); }
+.intent-card .ic-icon { font-size: 28px; margin-bottom: 12px; display: block; }
+.intent-card .ic-title {
+  font-family: var(--font-serif);
+  font-size: 1.15rem;
+  font-weight: 500;
+  color: var(--primary);
+  margin-bottom: 6px;
+}
+.intent-card .ic-desc {
+  font-size: 13px;
+  color: var(--on-surface-muted);
+  line-height: 1.55;
+  font-weight: 300;
+}
+.intent-card.selected {
+  background: var(--primary);
+  pointer-events: none;
+}
+.intent-card.selected .ic-title, .intent-card.selected .ic-desc { color: var(--on-primary); }
+.intent-card.selected::after { transform: scaleX(1); background: var(--accent-warm); }
+.intent-card.dimmed { opacity: 0.2; pointer-events: none; transform: scale(0.97); }
+
+/* ── Option chips (narrowing choices) ── */
+.chip-row { display: flex; flex-wrap: wrap; gap: 10px; padding: 8px 0 28px; }
+.chip {
+  padding: 14px 24px;
+  background: var(--surface-lowest);
+  border-radius: 100px;
+  cursor: pointer;
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--on-surface);
+  transition: all 0.3s var(--ease);
+  border: none;
+}
+.chip:hover {
+  background: var(--surface-mid);
+  color: var(--primary);
+  transform: translateY(-2px);
+}
+.chip.selected {
+  background: var(--primary);
+  color: var(--on-primary);
+  pointer-events: none;
+  font-weight: 500;
+}
+.chip.dimmed { opacity: 0.2; pointer-events: none; }
+
+/* ── Concern grid (2-column for symptom selection) ── */
+.concern-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  padding: 8px 0 28px;
+}
+.concern-chip {
+  padding: 14px 20px;
+  background: var(--surface-lowest);
+  border-radius: 12px;
+  cursor: pointer;
+  font-size: 13.5px;
+  font-weight: 400;
+  color: var(--on-surface);
+  transition: all 0.3s var(--ease);
+  text-align: left;
+}
+.concern-chip:hover { background: var(--surface-mid); color: var(--primary); }
+.concern-chip.selected { background: var(--primary); color: var(--on-primary); pointer-events: none; font-weight: 500; }
+.concern-chip.dimmed { opacity: 0.2; pointer-events: none; }
+
+/* ── Free text input ── */
+.free-wrap { display: flex; gap: 10px; padding: 8px 0 28px; }
+.free-input {
+  flex: 1;
+  padding: 16px 20px;
+  background: var(--surface-high);
+  border: none;
+  border-bottom: 2px solid var(--outline-variant);
+  border-radius: 12px 12px 0 0;
+  font-family: var(--font-sans);
+  font-size: 14px;
+  color: var(--on-surface);
+  outline: none;
+  transition: border-color 0.3s;
+}
+.free-input:focus { border-bottom-color: var(--primary); }
+.free-input::placeholder { color: var(--on-surface-muted); font-weight: 300; }
+.free-send {
+  width: 52px; height: 52px;
+  border-radius: 50%;
+  background: var(--primary);
+  border: none;
+  color: var(--on-primary);
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.3s;
+  flex-shrink: 0;
+}
+.free-send:hover { background: var(--primary-container); transform: scale(1.05); }
+.free-send svg { width: 18px; height: 18px; }
+
+/* ── Typing indicator ── */
+.typing { display: none; padding: 20px 0; align-items: center; gap: 6px; }
+.typing.on { display: flex; }
+.typing::before {
+  content: '';
+  display: inline-block;
+  width: 20px; height: 1px;
+  background: var(--secondary-light);
+  margin-right: 8px;
+}
+.tdot { width: 6px; height: 6px; background: var(--on-surface-muted); border-radius: 50%; animation: tbounce 1.4s infinite; }
+.tdot:nth-child(2) { animation-delay: 0.2s; }
+.tdot:nth-child(3) { animation-delay: 0.4s; }
+@keyframes tbounce { 0%,60%,100%{transform:translateY(0);opacity:.3} 30%{transform:translateY(-6px);opacity:1} }
+
+/* ══════════ PRODUCT CAROUSEL ══════════ */
+.reco-section {
+  padding: 12px 0;
+  opacity: 0; transform: translateY(20px);
+  transition: all 0.6s var(--ease-out);
+}
+.reco-section.show { opacity: 1; transform: translateY(0); }
+.reco-scroll-wrap { position: relative; }
+.reco-scroll {
+  display: flex; gap: 20px;
+  overflow-x: auto; scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  padding: 8px 4px 24px;
+  scrollbar-width: none;
+}
+.reco-scroll::-webkit-scrollbar { display: none; }
+
+/* Product cards — organic, editorial feel */
+.pcard {
+  flex: 0 0 280px;
+  scroll-snap-align: start;
+  background: var(--surface-lowest);
+  border-radius: 20px;
+  overflow: hidden;
+  transition: all 0.35s var(--ease);
+  opacity: 0; transform: translateX(30px);
+}
+.pcard.show { opacity: 1; transform: translateX(0); }
+.pcard:hover { transform: translateY(-4px); }
+.pcard-img {
+  width: 100%; height: 260px;
+  background-size: cover;
+  background-position: center;
+  background-color: var(--surface-low);
+  position: relative;
+}
+.pcard-tag {
+  position: absolute;
+  top: 14px; left: 14px;
+  padding: 5px 14px;
+  border-radius: 100px;
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  background: rgba(254,249,239,0.85);
+  backdrop-filter: blur(8px);
+  color: var(--primary);
+}
+
+.pcard-body { padding: 22px 24px 26px; }
+.pcard-name {
+  font-family: var(--font-serif);
+  font-size: 1.15rem;
+  font-weight: 500;
+  color: var(--on-surface);
+  margin-bottom: 2px;
+}
+.pcard-price {
+  font-size: 13px;
+  color: var(--on-surface-muted);
+  margin-bottom: 12px;
+  font-weight: 400;
+}
+.pcard-match {
+  font-family: var(--font-serif);
+  font-size: 13px;
+  color: var(--secondary);
+  margin-bottom: 18px;
+  line-height: 1.6;
+  font-style: italic;
+  font-weight: 400;
+}
+.pcard-cta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 100%;
+  padding: 12px 24px;
+  background: var(--primary);
+  color: var(--on-primary);
+  border: none;
+  border-radius: 100px;
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+  letter-spacing: 0.3px;
+}
+.pcard-cta:hover { background: var(--primary-container); }
+.pcard-cta svg { width: 14px; height: 14px; }
+
+.scroll-arrow {
+  position: absolute; top: 50%; transform: translateY(-70%);
+  width: 44px; height: 44px; border-radius: 50%;
+  background: rgba(254,249,239,0.85); backdrop-filter: blur(8px);
+  border: none; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  z-index: 5; transition: all 0.3s;
+  color: var(--primary);
+}
+.scroll-arrow:hover { background: var(--surface-lowest); }
+.scroll-arrow.left { left: -18px; }
+.scroll-arrow.right { right: -18px; }
+.scroll-arrow svg { width: 18px; height: 18px; }
+
+/* ══════════ POST ACTIONS ══════════ */
+.post-row {
+  display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;
+  padding: 16px 0 20px;
+  opacity: 0; transform: translateY(10px);
+  transition: all 0.4s var(--ease);
+}
+.post-row.show { opacity: 1; transform: translateY(0); }
+.p-btn {
+  padding: 12px 24px; border-radius: 100px;
+  font-family: var(--font-sans); font-size: 13px; font-weight: 500;
+  cursor: pointer; transition: all 0.3s;
+  display: inline-flex; align-items: center; gap: 6px;
+  background: var(--surface-lowest); border: none; color: var(--on-surface-variant);
+}
+.p-btn:hover { background: var(--surface-mid); color: var(--primary); }
+.p-btn.ghost { background: transparent; color: var(--on-surface-muted); }
+
+/* ══════════ EMAIL CAPTURE ══════════ */
+.email-block {
+  background: var(--surface-low);
+  border-radius: 20px;
+  padding: 32px 36px;
+  text-align: center;
+  margin-top: 16px;
+  opacity: 0; transform: translateY(10px);
+  transition: all 0.5s var(--ease);
+}
+.email-block.show { opacity: 1; transform: translateY(0); }
+.email-block h3 {
+  font-family: var(--font-serif);
+  font-size: 1.4rem;
+  font-weight: 500;
+  color: var(--primary);
+  margin-bottom: 6px;
+}
+.email-block p { font-size: 13.5px; color: var(--on-surface-muted); margin-bottom: 20px; font-weight: 300; }
+.email-row { display: flex; gap: 8px; max-width: 420px; margin: 0 auto; }
+.email-inp {
+  flex: 1; padding: 13px 20px;
+  background: var(--surface-high);
+  border: none; border-bottom: 2px solid var(--outline-variant);
+  border-radius: 12px 12px 0 0;
+  font-family: var(--font-sans); font-size: 13.5px;
+  outline: none; transition: border-color 0.3s; color: var(--on-surface);
+}
+.email-inp:focus { border-bottom-color: var(--primary); }
+.email-inp::placeholder { color: var(--on-surface-muted); }
+.email-go {
+  padding: 13px 28px;
+  background: var(--primary); color: var(--on-primary);
+  border: none; border-radius: 100px;
+  font-family: var(--font-sans); font-size: 13px; font-weight: 600;
+  cursor: pointer; transition: background 0.3s; white-space: nowrap;
+}
+.email-go:hover { background: var(--primary-container); }
+
+/* ══════════ PROGRESS (apothecary counter) ══════════ */
+.progress-counter {
+  position: fixed; top: 84px; right: 32px;
+  font-family: var(--font-serif); font-size: 14px;
+  color: var(--on-surface-muted); z-index: 50;
+  display: flex; align-items: center; gap: 8px;
+}
+.progress-counter .pc-current { font-size: 24px; font-weight: 500; color: var(--primary); }
+.progress-counter .pc-divider { width: 16px; height: 1px; background: var(--on-surface-muted); }
+
+/* ══════════ FOOTER ══════════ */
+.site-footer {
+  background: var(--surface-low);
+  padding: 48px 48px 28px;
+}
+.ftr-inner {
+  max-width: 1000px; margin: 0 auto;
+  display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px;
+}
+.ftr-brand .ftr-logo { height: 28px; opacity: 0.8; margin-bottom: 12px; }
+.ftr-brand p { font-size: 13px; color: var(--on-surface-muted); line-height: 1.6; font-weight: 300; max-width: 280px; }
+.ftr-col h4 {
+  font-family: var(--font-serif);
+  font-size: 14px; font-weight: 500;
+  color: var(--primary); margin-bottom: 14px;
+}
+.ftr-col a { display: block; font-size: 12.5px; color: var(--on-surface-muted); text-decoration: none; margin-bottom: 8px; transition: color 0.3s; font-weight: 300; }
+.ftr-col a:hover { color: var(--primary); }
+.ftr-btm {
+  max-width: 1000px; margin: 28px auto 0;
+  padding-top: 20px;
+  border-top: 1px solid var(--outline-variant);
+  text-align: center; font-size: 11.5px; color: var(--on-surface-muted);
+}
+
+/* ══════════ RESPONSIVE ══════════ */
+@media (max-width: 768px) {
+  .site-header { padding: 0 20px; }
+  .header-nav { display: none; }
+  .advisor-wrap { padding: 0 20px 60px; }
+  .hero h1 { font-size: 2.4rem; }
+  .intent-grid { grid-template-columns: 1fr; }
+  .concern-grid { grid-template-columns: 1fr; }
+  .pcard { flex: 0 0 250px; }
+  .ftr-inner { grid-template-columns: 1fr 1fr; gap: 24px; }
+  .scroll-arrow { display: none; }
+  .progress-counter { display: none; }
+  .email-row { flex-direction: column; }
+}
+</style>
+</head>
+<body>
+
+<!-- ══════════ HEADER ══════════ -->
+<header class="site-header">
+  <div class="header-inner">
+    <img src="https://www.onleorganics.com/cdn/shop/files/oNLe_Organics-horizon-noBG_0a63d8ca-2d46-4823-bd46-f6a0ee2198ca.png" alt="ōNLē ORGANICS" class="logo-img">
+    <nav><ul class="header-nav">
+      <li><a href="#">Shop</a></li>
+      <li><a href="#">Rebalance Kits</a></li>
+      <li><a href="#">Symptom Bundles</a></li>
+      <li><a href="#">Quiz</a></li>
+      <li><a href="#" class="nav-active">Wellness Advisor</a></li>
+      <li><a href="#">Podcast</a></li>
+    </ul></nav>
+    <div class="header-acts"><a href="#">Account</a><a href="#">Cart (0)</a></div>
+  </div>
+</header>
+
+<!-- Progress Counter (Apothecary style) -->
+<div class="progress-counter" id="progressCounter">
+  <span class="pc-current" id="pcCurrent">01</span>
+  <span class="pc-divider"></span>
+  <span id="pcTotal">05</span>
+</div>
+
+<!-- ══════════ ADVISOR PAGE ══════════ -->
+<main class="advisor-wrap">
+
+  <div class="hero">
+    <div class="hero-eyebrow">Wellness Advisor</div>
+    <h1>Find Your Path to <em>Whole-Body Healing</em></h1>
+    <p class="hero-body">Answer a few questions and our wellness guide will recommend the right ōNLē products for your unique healing journey — rooted in microbiome science.</p>
+    <div class="hero-disclaimer">
+      This advisor is for informational purposes only and does not provide medical advice. Always consult your healthcare provider before starting any supplement regimen. <a href="#">Privacy Policy</a>
+    </div>
+  </div>
+
+  <div class="journey" id="journey"></div>
+
+</main>
+
+<!-- ══════════ FOOTER ══════════ -->
+<footer class="site-footer">
+  <div class="ftr-inner">
+    <div class="ftr-brand">
+      <img src="https://www.onleorganics.com/cdn/shop/files/oNLe_Organics-horizon-noBG_0a63d8ca-2d46-4823-bd46-f6a0ee2198ca.png" alt="ōNLē ORGANICS" class="ftr-logo">
+      <p>Finally. Addressing the root, not the symptom. Microbiome-focused wellness for women, children, and families.</p>
+    </div>
+    <div class="ftr-col"><h4>Shop</h4><a href="#">Rebalance Kits</a><a href="#">Symptom Bundles</a><a href="#">Topical Support</a><a href="#">Individual Products</a><a href="#">Courses</a></div>
+    <div class="ftr-col"><h4>Learn</h4><a href="#">The ōNLē Method</a><a href="#">Gut Health Quiz</a><a href="#">Podcast</a><a href="#">Cookbook</a></div>
+    <div class="ftr-col"><h4>Support</h4><a href="#">Contact</a><a href="#">FAQ</a><a href="#">Shipping</a><a href="#">Returns</a></div>
+  </div>
+  <div class="ftr-btm">© 2026 ōNLē ORGANICS. All rights reserved. These statements have not been evaluated by the FDA.</div>
+</footer>
+
+<script>
+// ══════════ PRODUCT DATA ══════════
+const PRODUCTS = {
+  gut_rebalance: [
+    { name: "Women's Gut Rebalance Kit", price: "From $265.00", img: "https://www.onleorganics.com/cdn/shop/files/F9ECBE85-8FFE-49DF-9AE3-4890DCCA3D3F.jpg", tag: "Foundation", match: "The starting point of the ōNLē Method — a full microbiome reset designed specifically for women." },
+    { name: "Gut Health Maintenance Bundle", price: "From $103.00", img: "https://www.onleorganics.com/cdn/shop/files/56E9693E-DAD8-4FAA-A857-8AB4F109157E.jpg", tag: "Daily Support", match: "Keep your microbiome thriving with everyday probiotic and immune support after your rebalance." },
+    { name: "Detox & Restore Bundle", price: "From $62.10", img: "https://www.onleorganics.com/cdn/shop/files/8A3D5162-6249-4E59-84AA-DE9E42712FD2.jpg", tag: "Detox", match: "Gentle detox support to help your body clear what it no longer needs as you heal." },
+    { name: "Nourish Everyday Probiotic", price: "From $48.60", img: "https://www.onleorganics.com/cdn/shop/files/22852E10-F7C4-43E4-92DC-510A901D2AD3.jpg", tag: "Probiotic", match: "A cornerstone daily probiotic formulated for gut restoration and long-term balance." },
+  ],
+  children: [
+    { name: "Children's Gut Rebalance Kit", price: "From $211.00", img: "https://www.onleorganics.com/cdn/shop/files/B9BFEEFE-B062-4061-AEA9-C5FCBC5F7DB7.jpg", tag: "Foundation", match: "A gentle, child-safe microbiome reset — the foundation of healing for little ones." },
+    { name: "Everyday Balance CBD", price: "From $116.10", img: "https://www.onleorganics.com/cdn/shop/files/5B1C9936-8A76-4F5B-9F34-27F114A359DF.jpg", tag: "CBD", match: "THC-free, child-safe CBD to support calm and nervous system regulation." },
+    { name: "Cleanse Everyday Immune Boost", price: "From $51.30", img: "https://www.onleorganics.com/cdn/shop/files/334C25B5-47AB-4715-A2C7-CF3A1C73430D.jpg", tag: "Immune", match: "Daily immune support formulated with organic ingredients safe for all ages." },
+    { name: "Magic Stuff Healing Gel", price: "From $29.70", img: "https://www.onleorganics.com/cdn/shop/files/C5259C74-A98F-4AFA-B87E-A5892444F42C.jpg", tag: "Topical", match: "A soothing topical gel for skin irritation, rashes, and everyday scrapes." },
+  ],
+  skin: [
+    { name: "Facial Flora Kit", price: "From $73.80", img: "https://www.onleorganics.com/cdn/shop/files/4F70ABA3-4DB1-42E6-A1C6-329224E97B49.jpg", tag: "Skin", match: "Restore your facial microbiome with this gentle, probiotic-infused skincare ritual." },
+    { name: "Body Biome Kit", price: "From $81.90", img: "https://www.onleorganics.com/cdn/shop/files/C3C0BC72-6696-45C3-BDCB-CE15F4B41388.jpg", tag: "Body", match: "Full-body microbiome support for healthier skin from head to toe." },
+    { name: "Rejuvenate Facial Serum", price: "From $31.50", img: "https://www.onleorganics.com/cdn/shop/files/39FDA07B-F0E5-4754-8495-E5689928AAAD.jpg", tag: "Serum", match: "A lightweight serum that nourishes and restores your skin's natural glow." },
+    { name: "Glow Body Oil", price: "From $40.50", img: "https://www.onleorganics.com/cdn/shop/files/1CB485B5-FBAE-479A-A7E3-24669B01DB7A.jpg", tag: "Oil", match: "Rich, organic body oil for deep moisture and a healthy, radiant finish." },
+  ],
+  symptom_acne: [
+    { name: "Acne Healing Bundle", price: "From $342.00", img: "https://www.onleorganics.com/cdn/shop/files/HeaderImage_1.jpg", tag: "Bundle", match: "A targeted protocol addressing the gut-skin connection behind persistent breakouts." },
+    { name: "Facial Flora Kit", price: "From $73.80", img: "https://www.onleorganics.com/cdn/shop/files/4F70ABA3-4DB1-42E6-A1C6-329224E97B49.jpg", tag: "Topical", match: "Rebalance the bacteria on your skin's surface while healing from within." },
+    { name: "Nourish Everyday Probiotic", price: "From $48.60", img: "https://www.onleorganics.com/cdn/shop/files/22852E10-F7C4-43E4-92DC-510A901D2AD3.jpg", tag: "Internal", match: "Daily probiotic support to maintain clear skin long after your protocol ends." },
+    { name: "Magic Stuff Healing Gel", price: "From $29.70", img: "https://www.onleorganics.com/cdn/shop/files/C5259C74-A98F-4AFA-B87E-A5892444F42C.jpg", tag: "Topical", match: "Soothing spot treatment for active breakouts and post-acne healing." },
+  ],
+  symptom_general: [
+    { name: "Women's Gut Rebalance Kit", price: "From $265.00", img: "https://www.onleorganics.com/cdn/shop/files/F9ECBE85-8FFE-49DF-9AE3-4890DCCA3D3F.jpg", tag: "Foundation", match: "Every healing journey starts with the gut. This kit is the foundation of the ōNLē Method." },
+    { name: "Detox & Restore Bundle", price: "From $62.10", img: "https://www.onleorganics.com/cdn/shop/files/8A3D5162-6249-4E59-84AA-DE9E42712FD2.jpg", tag: "Detox", match: "Support your body's natural detox pathways while you address the root cause." },
+    { name: "Everyday Balance CBD", price: "From $116.10", img: "https://www.onleorganics.com/cdn/shop/files/5B1C9936-8A76-4F5B-9F34-27F114A359DF.jpg", tag: "Nervous System", match: "Calm inflammation and support your nervous system as your body rebalances." },
+    { name: "Soak Bath Salts", price: "From $35.10", img: "https://www.onleorganics.com/cdn/shop/files/7B1BEC57-EECC-492B-A414-40A0B46457B6.jpg", tag: "Recovery", match: "A mineral-rich soak to ease discomfort and support detox through the skin." },
+  ],
+};
+
+// ══════════ STATE ══════════
+const J = document.getElementById('journey');
+let stepNum = 0;
+let branch = null; // 'discover' or 'concern'
+let who = null;
+
+function setStep(n) {
+  stepNum = n;
+  document.getElementById('pcCurrent').textContent = String(n).padStart(2, '0');
+}
+
+function scrollTo(el) { setTimeout(() => el.scrollIntoView({ behavior: 'smooth', block: 'center' }), 100); }
+function delay(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+function advisorBlock(text) {
+  return `<div class="advisor-block">
+    <div class="ab-eyebrow">Wellness Advisor</div>
+    <div class="ab-text">${text}</div>
+  </div>`;
+}
+
+function userChoice(text) {
+  return `<div class="user-choice"><div class="user-choice-pill"><span class="uc-check">✓</span>${text}</div></div>`;
+}
+
+function showTyping() {
+  const t = document.createElement('div');
+  t.className = 'typing on'; t.id = 'typing';
+  t.innerHTML = '<div class="tdot"></div><div class="tdot"></div><div class="tdot"></div>';
+  J.appendChild(t); t.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  return t;
+}
+function hideTyping(t) { if (t) t.remove(); }
+
+function buildCards(products) {
+  let h = `<div class="reco-section" id="recoSection"><div class="reco-scroll-wrap">
+    <button class="scroll-arrow left" onclick="scrollReco(-1)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg></button>
+    <div class="reco-scroll" id="recoScroll">`;
+  products.forEach((p, i) => {
+    h += `<div class="pcard" style="transition-delay:${i*0.12}s">
+      <div class="pcard-img" style="background-image:url(${p.img})"><span class="pcard-tag">${p.tag}</span></div>
+      <div class="pcard-body">
+        <div class="pcard-name">${p.name}</div>
+        <div class="pcard-price">${p.price}</div>
+        <div class="pcard-match">${p.match}</div>
+        <button class="pcard-cta">Learn More <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></button>
+      </div>
+    </div>`;
+  });
+  h += `</div><button class="scroll-arrow right" onclick="scrollReco(1)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg></button></div></div>`;
+  return h;
+}
+
+function scrollReco(dir) {
+  const el = document.getElementById('recoScroll');
+  if (el) el.scrollBy({ left: dir * 300, behavior: 'smooth' });
+}
+
+// ══════════ STEP BUILDERS ══════════
+
+function buildStep1() {
+  const s = document.createElement('div');
+  s.className = 'step';
+  s.innerHTML = advisorBlock("Welcome. I\u2019m here to help you find the right products for <strong>your unique healing journey</strong>. Let\u2019s begin with a simple question \u2014") +
+  `<div class="intent-grid">
+    <div class="intent-card" onclick="selectIntent(this,'discover')">
+      <span class="ic-icon">\uD83C\uDF3F</span>
+      <div class="ic-title">Help Me Find My Path</div>
+      <div class="ic-desc">I\u2019m not sure where to start. Guide me based on who I am and what I\u2019m looking for.</div>
+    </div>
+    <div class="intent-card" onclick="selectIntent(this,'concern')">
+      <span class="ic-icon">\uD83C\uDFAF</span>
+      <div class="ic-title">I Have a Specific Concern</div>
+      <div class="ic-desc">I know what I\u2019m dealing with and want targeted product recommendations.</div>
+    </div>
+  </div>`;
+  J.appendChild(s);
+  requestAnimationFrame(() => { s.classList.add('active'); setStep(1); });
+}
+
+async function selectIntent(el, b) {
+  branch = b;
+  el.classList.add('selected');
+  el.parentElement.querySelectorAll('.intent-card:not(.selected)').forEach(c => c.classList.add('dimmed'));
+  const label = b === 'discover' ? 'Help me find my path' : 'I have a specific concern';
+  addChoice(label);
+  if (b === 'discover') await buildDiscoverWho(); else await buildConcernWho();
+}
+
+function addChoice(text) {
+  const s = document.createElement('div'); s.className = 'step';
+  s.innerHTML = userChoice(text);
+  J.appendChild(s); requestAnimationFrame(() => s.classList.add('active'));
+}
+
+// ── DISCOVER BRANCH ──
+
+async function buildDiscoverWho() {
+  const t = showTyping(); await delay(900); hideTyping(t);
+  const s = document.createElement('div'); s.className = 'step';
+  s.innerHTML = advisorBlock("Beautiful. Let\u2019s start with the basics \u2014 <strong>who are we finding products for?</strong>") +
+  `<div class="chip-row">
+    <div class="chip" onclick="selectWho(this,'woman')">Woman</div>
+    <div class="chip" onclick="selectWho(this,'child')">Child</div>
+    <div class="chip" onclick="selectWho(this,'man')">Man</div>
+    <div class="chip" onclick="selectWho(this,'family')">Our Family</div>
+  </div>`;
+  J.appendChild(s);
+  requestAnimationFrame(() => { s.classList.add('active'); scrollTo(s); setStep(2); });
+}
+
+async function selectWho(el, w) {
+  who = w;
+  el.classList.add('selected');
+  el.parentElement.querySelectorAll('.chip:not(.selected)').forEach(c => c.classList.add('dimmed'));
+  addChoice(el.textContent);
+  await buildDiscoverGoal();
+}
+
+async function buildDiscoverGoal() {
+  const t = showTyping(); await delay(800); hideTyping(t);
+  const s = document.createElement('div'); s.className = 'step';
+  s.innerHTML = advisorBlock("What\u2019s the <strong>primary goal</strong> right now? Don\u2019t worry about getting it perfect \u2014 there\u2019s no wrong answer.") +
+  `<div class="chip-row">
+    <div class="chip" onclick="selectGoal(this,'gut')">Gut Healing & Rebalance</div>
+    <div class="chip" onclick="selectGoal(this,'skin')">Skin Health</div>
+    <div class="chip" onclick="selectGoal(this,'detox')">Detox & Cleansing</div>
+    <div class="chip" onclick="selectGoal(this,'daily')">Daily Wellness Maintenance</div>
+  </div>`;
+  J.appendChild(s);
+  requestAnimationFrame(() => { s.classList.add('active'); scrollTo(s); setStep(3); });
+}
+
+async function selectGoal(el, goal) {
+  el.classList.add('selected');
+  el.parentElement.querySelectorAll('.chip:not(.selected)').forEach(c => c.classList.add('dimmed'));
+  addChoice(el.textContent);
+  await buildDiscoverStage(goal);
+}
+
+async function buildDiscoverStage(goal) {
+  const t = showTyping(); await delay(800); hideTyping(t);
+  const s = document.createElement('div'); s.className = 'step';
+  s.innerHTML = advisorBlock("And where are you in your <strong>healing journey</strong>?") +
+  `<div class="chip-row">
+    <div class="chip" onclick="selectStage(this,'${goal}','beginning')">Just beginning</div>
+    <div class="chip" onclick="selectStage(this,'${goal}','struggling')">Been struggling for a while</div>
+    <div class="chip" onclick="selectStage(this,'${goal}','maintaining')">Maintaining &amp; optimizing</div>
+  </div>`;
+  J.appendChild(s);
+  requestAnimationFrame(() => { s.classList.add('active'); scrollTo(s); setStep(4); });
+}
+
+async function selectStage(el, goal, stage) {
+  el.classList.add('selected');
+  el.parentElement.querySelectorAll('.chip:not(.selected)').forEach(c => c.classList.add('dimmed'));
+  addChoice(el.textContent);
+
+  let products;
+  if (who === 'child') products = PRODUCTS.children;
+  else if (goal === 'skin') products = PRODUCTS.skin;
+  else products = PRODUCTS.gut_rebalance;
+
+  const goalLabel = { gut: 'gut healing', skin: 'skin health', detox: 'detox', daily: 'daily wellness' }[goal] || 'healing';
+  await showResults(products, `Based on your answers, here\u2019s what I\u2019d recommend to begin your <strong>${goalLabel} journey</strong>. Every path starts with the microbiome \u2014`);
+}
+
+// ── CONCERN BRANCH ──
+
+async function buildConcernWho() {
+  const t = showTyping(); await delay(900); hideTyping(t);
+  const s = document.createElement('div'); s.className = 'step';
+  s.innerHTML = advisorBlock("Of course. First \u2014 <strong>who is experiencing this concern?</strong>") +
+  `<div class="chip-row">
+    <div class="chip" onclick="selectConcernWho(this,'woman')">Woman (me)</div>
+    <div class="chip" onclick="selectConcernWho(this,'child')">My Child</div>
+    <div class="chip" onclick="selectConcernWho(this,'man')">Man</div>
+  </div>`;
+  J.appendChild(s);
+  requestAnimationFrame(() => { s.classList.add('active'); scrollTo(s); setStep(2); });
+}
+
+async function selectConcernWho(el, w) {
+  who = w;
+  el.classList.add('selected');
+  el.parentElement.querySelectorAll('.chip:not(.selected)').forEach(c => c.classList.add('dimmed'));
+  addChoice(el.textContent);
+  await buildConcernSelect();
+}
+
+async function buildConcernSelect() {
+  const t = showTyping(); await delay(800); hideTyping(t);
+  const s = document.createElement('div'); s.className = 'step';
+  s.innerHTML = advisorBlock("What <strong>specific concern</strong> are you looking to address? Select the one that resonates most.") +
+  `<div class="concern-grid">
+    <div class="concern-chip" onclick="selectConcern(this,'acne')">Acne & Skin Breakouts</div>
+    <div class="concern-chip" onclick="selectConcern(this,'adhd')">ADHD & Focus</div>
+    <div class="concern-chip" onclick="selectConcern(this,'allergy')">Allergies & Sensitivities</div>
+    <div class="concern-chip" onclick="selectConcern(this,'autoimmune')">Autoimmune Issues</div>
+    <div class="concern-chip" onclick="selectConcern(this,'candida')">Candida / SIBO / H.Pylori</div>
+    <div class="concern-chip" onclick="selectConcern(this,'eczema')">Eczema & Skin Conditions</div>
+    <div class="concern-chip" onclick="selectConcern(this,'fertility')">Fertility & Hormones</div>
+    <div class="concern-chip" onclick="selectConcern(this,'mental')">Mental Health & Mood</div>
+    <div class="concern-chip" onclick="selectConcern(this,'mold')">Mold Exposure Recovery</div>
+    <div class="concern-chip" onclick="selectConcern(this,'parasite')">Parasite Cleansing</div>
+    <div class="concern-chip" onclick="selectConcern(this,'poop')">Digestive & Poop Issues</div>
+    <div class="concern-chip" onclick="selectConcern(this,'toxin')">Toxins & Heavy Metals</div>
+  </div>`;
+  J.appendChild(s);
+  requestAnimationFrame(() => { s.classList.add('active'); scrollTo(s); setStep(3); });
+}
+
+async function selectConcern(el, concern) {
+  el.classList.add('selected');
+  el.parentElement.querySelectorAll('.concern-chip:not(.selected)').forEach(c => c.classList.add('dimmed'));
+  addChoice(el.textContent);
+
+  const products = concern === 'acne' || concern === 'eczema' ? PRODUCTS.symptom_acne : PRODUCTS.symptom_general;
+  await showResults(products, `Here\u2019s a curated protocol for <strong>${el.textContent.toLowerCase()}</strong>. Remember \u2014 all healing starts in the gut. These products work together to address the root cause.`);
+}
+
+// ══════════ RESULTS ══════════
+
+async function showResults(products, introText) {
+  const t = showTyping(); await delay(1200); hideTyping(t);
+  setStep(5);
+
+  const s = document.createElement('div'); s.className = 'step';
+  s.innerHTML = advisorBlock(introText);
+  J.appendChild(s); requestAnimationFrame(() => s.classList.add('active'));
+
+  const r = document.createElement('div');
+  r.innerHTML = buildCards(products);
+  J.appendChild(r);
+  await delay(200);
+  const recoEl = document.getElementById('recoSection');
+  recoEl.classList.add('show');
+  scrollTo(recoEl);
+  const cards = recoEl.querySelectorAll('.pcard');
+  for (let i = 0; i < cards.length; i++) { await delay(150); cards[i].classList.add('show'); }
+
+  await delay(600);
+  const t2 = showTyping(); await delay(700); hideTyping(t2);
+  const s2 = document.createElement('div'); s2.className = 'step';
+  s2.innerHTML = advisorBlock("Scroll through to explore each recommendation. If you\u2019d like to adjust, I\u2019m here.");
+  J.appendChild(s2); requestAnimationFrame(() => s2.classList.add('active'));
+
+  await delay(300);
+  const a = document.createElement('div');
+  a.innerHTML = `<div class="post-row" id="postRow"><button class="p-btn" onclick="restartAdvisor()">Start Over</button><button class="p-btn">Take the Full Quiz</button><button class="p-btn ghost">Talk to a Specialist</button></div>`;
+  J.appendChild(a); await delay(100); document.getElementById('postRow').classList.add('show');
+
+  await delay(300);
+  const e = document.createElement('div');
+  e.innerHTML = `<div class="email-block" id="emailBlock"><h3>Stay on Your Healing Path</h3><p>Join The Nourished Newsletter for gut health tips, product guides, and exclusive offers.</p><div class="email-row"><input type="email" class="email-inp" placeholder="Your email address"><button class="email-go">Subscribe</button></div></div>`;
+  J.appendChild(e); await delay(100); document.getElementById('emailBlock').classList.add('show');
+}
+
+function restartAdvisor() {
+  J.innerHTML = '';
+  branch = null; who = null; stepNum = 0;
+  setStep(0);
+  buildStep1();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ══════════ INIT ══════════
+buildStep1();
+</script>
+</body>
+</html>
